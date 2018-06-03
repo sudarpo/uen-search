@@ -4,61 +4,87 @@ var _SC_UEN = (function () {
 	var DATA_GOV = "https://data.gov.sg/api/action/datastore_search?";
 	var DATA_RESOURCEID_1 = "resource_id=bdb377b8-096f-4f86-9c4f-85bad80ef93c"; // ACRA
 	var DATA_RESOURCEID_2 = "resource_id=5ab68aac-91f6-4f39-9b21-698610bdf3f7"; // Other Issuance Agency
+	var DS_ACRA = "ACRA";
+	var DS_OTHERS = "OTHERS";
 	var DATA_QS = "&limit=" + MAX_RECORDS + "&q=";
 	
 	$(function () {
 		hideMessage(".result-message");
 		hideLoading();
+		hideErrorMessage();
 		handleSearchButtonClick();
 		
 	});
 
 	function handleSearchButtonClick() {
 		$("#searchUenButton").on("click", function(e) {
-			var entityName = $("#entityName").val().trim();
-			console.log("entityName", entityName);
 
-			if (entityName !== "") {
-				searchByEntityName(entityName.toUpperCase());
+			var isAcraSelected = $("#sourceAcra").prop("checked");
+			var searchParam = {
+				searchKeyword: $("#entityName").val().trim().toUpperCase(),
+				dataSource: isAcraSelected ? DS_ACRA : DS_OTHERS,
+				searchField: $("#searchField").val()
+			}
+
+			console.log("entityName", searchParam);
+
+			if (searchParam.searchKeyword !== "") {
+				searchByEntityName(searchParam);
 			}
 			
 			e.preventDefault();
 		});
 	}
 	
-	function searchByEntityName(entityName) {
+	function searchByEntityName(searchParam) {
 		
 		showLoading();
+		hideErrorMessage();
 		hideMessage(".result-message");
 
-		var resourceUrl = DATA_GOV;
-		var isAcraSelected = $("#sourceAcra").prop("checked");
+		var resourceUrl = getResourceUrl(searchParam);
 
-		if (isAcraSelected) {
+		// Send ajax call
+		console.log("Send ajax call", resourceUrl);
+		$.ajax({
+			method: "GET",
+			url: resourceUrl,
+			timeout: 30000
+		})
+		.fail(function(jqXHR, textStatus) {
+			console.error("Request failed: ", textStatus, jqXHR);
+			destroyAndCreateTable();
+			showErrorMessage("Oops... Search return " + textStatus + ". Please try again later! <br/>");
+		})
+		.done(function(data) {
+			displayResult(searchParam, data);
+		})
+		.always(function (data, textStatus) {
+			hideLoading();
+			console.log("Ajax Completed", textStatus);
+		});
+		
+	}
+	
+	function getResourceUrl(searchParam) {
+
+		// Define resource URL
+		var resourceUrl = DATA_GOV;
+
+		if (searchParam.dataSource === DS_ACRA) {
 			resourceUrl += DATA_RESOURCEID_1;
 		}
 		else {
 			resourceUrl += DATA_RESOURCEID_2;
 		}
 
-		var queryStr = '{"entity_name": "' + entityName + '"}';
+		var queryStr = '{"' + searchParam.searchField + '": "' + searchParam.searchKeyword + '"}';
 		resourceUrl += DATA_QS + encodeURI(queryStr);
 		
-		$.ajax({
-			method: "GET",
-			url: resourceUrl
-		})
-		.fail(function(jqXHR, textStatus) {
-			console.error("Request failed: ", textStatus, jqXHR);
-			// TODO: error handling
-		})
-		.done(function(data) {
-			hideLoading();
-			displayResult(entityName, data);
-		});
-		
+		return resourceUrl;
+
 	}
-	
+
 	function destroyAndCreateTable() {
 		$("#search-result").empty();
 		var uenTable = $("<table>")
@@ -67,10 +93,11 @@ var _SC_UEN = (function () {
 		$("#search-result").append($(uenTable));
 	}
 
-	function displayResult(entityName, data) {
+	function displayResult(searchParam, data) {
 		if (data && data.success) {
 			
-			var message = "Search key: '" + entityName + "' <br/>";
+			var message = "Search key: '" + searchParam.searchKeyword + "' by [" + searchParam.searchField + "] <br/>";
+
 			if (data.result.total) {
 				message += data.result.total + " record(s) found. <br/>";
 				if (data.result.total > MAX_RECORDS) {
@@ -103,6 +130,14 @@ var _SC_UEN = (function () {
 		}
 	}
 	
+	function hideErrorMessage() {
+		$(".sc-search-error").html("").hide();
+	}
+
+	function showErrorMessage(message) {
+		$(".sc-search-error").html(message).show();
+	}
+
 	function showMessage(id, message) {
 		$(id).show().html(message);
 	}
@@ -119,6 +154,4 @@ var _SC_UEN = (function () {
 		$(".loading-text").hide();
 	}
 	
-	
-
 })();
