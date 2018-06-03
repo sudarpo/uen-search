@@ -32,9 +32,9 @@
 				</li>
 
 				<li class="nav-item">
-				  <a class="nav-link" href="#sc-tab-verify" id="sc-tablink-verify" 
-				  	data-toggle="tab" role="tab" aria-controls="verify-tab" aria-selected="false">
-					Verify UEN
+				  <a class="nav-link" href="#sc-tab-about" id="sc-tablink-about" 
+				  	data-toggle="tab" role="tab" aria-controls="about-tab" aria-selected="false">
+					Credits
 				  </a>
 				</li>
 				
@@ -50,18 +50,28 @@
 				<!-- Search UEN -->
 				<div class="tab-pane fade show active" id="sc-tab-search" role="tabpanel" aria-labelledby="sc-tablink-search">
 
-					<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-1">
-						<h1>UEN Search</h1>
-					</div>
-					<p class="lead">Simple UEN search tool. </p>
+					<p class="lead mt-2">Simple UEN search tool</p>
 		
 					<form>
 						<div class="form-group">
-							<label for="entityName">Entity/Company Name</label>
-							<input type="text" class="form-control" id="entityName" placeholder="" value="" required>
+							<label for="entityName">UEN / Entity / Company Name</label>
+
+							<div class="input-group mb-3">
+								<input type="text" class="form-control" id="entityName" 
+									placeholder="UEN or Entity Name" value="" autocomplete="off" required>
+								<div class="input-group-prepend">
+									<label class="input-group-text" for="inputGroupSelect01">search by</label>
+								</div>
+								<select class="custom-select" id="searchField">
+									<option selected value="entity_name">Entity Name</option>
+									<option value="uen">UEN</option>
+								</select>
+							</div>
+							
 						</div>
 						
 						<div class="form-group mb-3">
+								
 							<div class="form-check form-check-inline">
 								<input class="form-check-input" type="radio" name="data-source" id="sourceAcra" value="100" checked>
 								<label class="form-check-label" for="sourceAcra">
@@ -86,6 +96,8 @@
 							<div class="loading-text alert alert-warning" role="alert" style="display: none">
 								Searching... <i class="fas fa-spinner fa-pulse"></i>
 							</div>
+							<div class="sc-search-error alert alert-danger" role="alert" style="display: none">
+							</div>
 							<div class="result-message alert alert-primary" role="alert" style="display: none"></div>
 						</div>
 					</div>
@@ -97,11 +109,22 @@
 
 				</div>
 
-				<!-- Verify UEN -->
-				<div class="tab-pane fade" id="sc-tab-verify" role="tabpanel" aria-labelledby="sc-tablink-verify">
+				<!-- Credits -->
+				<div class="tab-pane fade" id="sc-tab-about" role="tabpanel" aria-labelledby="sc-tablink-about">
 					
-					<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-1">
-						<h1>Verify UEN</h1>
+					<div class="row">
+						<div class="col-sm-6">
+							<h1>Credits</h1>
+
+							<ul class="list-group">
+								<li class="list-group-item">Sudarpo Chong (sudarpo.chong@gmail.com)</li>
+								<li class="list-group-item"><a href="https://data.gov.sg">data.gov.sg API</a></li>
+								<li class="list-group-item"><a href="https://getbootstrap.com/">Bootstrap 4</a></li>
+								<li class="list-group-item"><a href="https://jquery.com/">jQuery</a></li>
+								<li class="list-group-item"><a href="https://datatables.net/">datatables</a></li>
+								<li class="list-group-item"><a href="https://fontawesome.com/">Font Awesome</a></li>
+							</ul>
+						</div>
 					</div>
 
 				</div>
