@@ -1,62 +1,117 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<meta author="sudarpo chong" />
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
-
+	<link rel="stylesheet" href="style.css">
+	
     <title>UEN Search</title>
   </head>
   <body>
-    
-	<div class="container">
-		
-		<div class="jumbotron">
-			<h1>UEN Search</h1>
-			<p class="lead">Simple UEN search tool. </p>
-		</div>
-		<form>
-			<div class="form-group">
-				<label for="entityName">Entity/Company Name</label>
-				<input type="text" class="form-control" id="entityName" placeholder="" value="" required>
-			</div>
+
+    <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+		<a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">UEN Search</a>
+	</nav>
+
+	<div class="container-fluid">
+		<div class="row">
+		  <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+			<div class="sidebar-sticky">
+			  <ul class="nav flex-column">
+
+				<li class="nav-item">
+				  <a class="nav-link active" href="#sc-tab-search" id="sc-tablink-search" 
+				  	data-toggle="tab" role="tab" aria-controls="search-tab" aria-selected="true">
+					UEN Search<span class="sr-only">(current)</span>
+				  </a>
+				</li>
+
+				<li class="nav-item">
+				  <a class="nav-link" href="#sc-tab-verify" id="sc-tablink-verify" 
+				  	data-toggle="tab" role="tab" aria-controls="verify-tab" aria-selected="false">
+					Verify UEN
+				  </a>
+				</li>
 				
-			<div class="form-check">
-				<input class="form-check-input" type="radio" name="data-source" id="sourceAcra" value="100" checked>
-				<label class="form-check-label" for="sourceAcra">
-					ACRA
-				</label>
+			  </ul>
+  
 			</div>
+		  </nav>
+  
+		  <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
 
-			<div class="form-check mb-3">
-				<input class="form-check-input" type="radio" name="data-source" id="sourceOthers" value="101">
-				<label class="form-check-label" for="sourceOthers">
-					Other Issuance Agency
-				</label>
-			</div>
+			<div class="tab-content" id="sc-tab-list">
 
-			<button id="searchUenButton" class="btn btn-primary" type="submit">Search</button>
-		</form>
-		<hr class="mb-4">
+				<!-- Search UEN -->
+				<div class="tab-pane fade show active" id="sc-tab-search" role="tabpanel" aria-labelledby="sc-tablink-search">
+
+					<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-1">
+						<h1>UEN Search</h1>
+					</div>
+					<p class="lead">Simple UEN search tool. </p>
 		
-		<div class="row">
-			<div class="col-xs-12 col-md-12 mb-0">
-				<div class="loading-text alert alert-warning" role="alert" style="display: none">
-					Searching... <i class="fas fa-spinner fa-pulse"></i>
+					<form>
+						<div class="form-group">
+							<label for="entityName">Entity/Company Name</label>
+							<input type="text" class="form-control" id="entityName" placeholder="" value="" required>
+						</div>
+						
+						<div class="form-group mb-3">
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="data-source" id="sourceAcra" value="100" checked>
+								<label class="form-check-label" for="sourceAcra">
+									ACRA
+								</label>
+							</div>
+				
+							<div class="form-check form-check-inline">
+								<input class="form-check-input" type="radio" name="data-source" id="sourceOthers" value="101">
+								<label class="form-check-label" for="sourceOthers">
+									Other Issuance Agency
+								</label>
+							</div>
+						</div>
+		
+						<button id="searchUenButton" class="btn btn-primary" type="submit">Search</button>
+					</form>
+					<hr class="mb-4">
+					
+					<div class="row">
+						<div class="col-xs-12 col-md-12 mb-0">
+							<div class="loading-text alert alert-warning" role="alert" style="display: none">
+								Searching... <i class="fas fa-spinner fa-pulse"></i>
+							</div>
+							<div class="result-message alert alert-primary" role="alert" style="display: none"></div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-12 col-md-12 mb-1">
+							<div id="search-result" class="table-responsive"></div>
+						</div>
+					</div>
+
 				</div>
-				<div class="result-message alert alert-primary" role="alert" style="display: none"></div>
+
+				<!-- Verify UEN -->
+				<div class="tab-pane fade" id="sc-tab-verify" role="tabpanel" aria-labelledby="sc-tablink-verify">
+					
+					<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-1">
+						<h1>Verify UEN</h1>
+					</div>
+
+				</div>
+
 			</div>
+
+		  </main>
 		</div>
-		<div class="row">
-			<div class="col-xs-12 col-md-12 mb-1">
-				<div id="search-result"></div>
-			</div>
-		</div>
-			
-	</div>
+	  </div>
+
 	
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
@@ -64,6 +119,6 @@
 	<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 	<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
 
-	<script src="uen-search.js"></script>
+	<script src="app.js"></script>
   </body>
 </html>
