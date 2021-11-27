@@ -2,7 +2,7 @@ var _SC_UEN = (function () {
 
 	var MAX_RECORDS = 150;
 	var DATA_GOV = "https://data.gov.sg/api/action/datastore_search?";
-	var DATA_RESOURCEID_1 = "resource_id=bdb377b8-096f-4f86-9c4f-85bad80ef93c"; // ACRA
+	var DATA_RESOURCEID_1 = "resource_id=39201285-b73e-487a-a971-3a12d34ab8d9"; // ACRA
 	var DATA_RESOURCEID_2 = "resource_id=5ab68aac-91f6-4f39-9b21-698610bdf3f7"; // Other Issuance Agency
 	var DS_ACRA = "ACRA";
 	var DS_OTHERS = "OTHERS";
